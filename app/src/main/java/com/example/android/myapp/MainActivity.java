@@ -18,7 +18,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
+        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
+        actionBar.setTitle(getResources().getString(R.string.app_name));
+        actionBar.setIcon(R.mipmap.movieicon);
+        actionBar.setDisplayOptions( ActionBar.DISPLAY_SHOW_HOME);
+        actionBar.setDisplayShowTitleEnabled(true);
+
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

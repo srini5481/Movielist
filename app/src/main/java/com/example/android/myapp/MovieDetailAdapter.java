@@ -1,12 +1,14 @@
 package com.example.android.myapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Rating;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,8 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
 
     private List<Object> movieDetailList;
+    //OnItemClickListener monItemClickListener;
+    private ClickListener clickListener;
 
 
     @Override
@@ -69,6 +73,10 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
     }
 
+    public void setClickListener(ClickListener clickListener){
+        this.clickListener=clickListener;
+    }
+
     @Override
     public int getItemCount() {
 
@@ -96,7 +104,7 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
     }
 
 
-    public  class MovieDetailHolder extends RecyclerView.ViewHolder {
+    public  class MovieDetailHolder extends RecyclerView.ViewHolder  {
 
         CardView cv;
 
@@ -112,11 +120,12 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
         }
 
+
     }
 
 
 
-    public class CardLayout_one extends MovieDetailHolder{
+    public class CardLayout_one extends MovieDetailHolder implements View.OnClickListener{
 
 
 
@@ -128,6 +137,8 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
         public CardLayout_one(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
 
 
             cv = (CardView)itemView.findViewById(R.id.cv2);
@@ -147,8 +158,9 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
             MovieListArray poster = (MovieListArray) movieDetailList.get(position);
 
+            Context context = cv.getContext();
 
-            Context context = cv.getContext(); //holder.moviePoster.getContext();
+             //holder.moviePoster.getContext();
 
             Picasso.with(context)
                     .load(poster.moviePoster)
@@ -159,8 +171,33 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
             movieYear.setText((poster.movieYear));
 
         }
+
+        @Override
+        public void onClick(View v) {
+
+            Context context = cv.getContext();
+
+            //context.startActivity(new Intent(context,DetailActivity.class));
+
+            //Intent intent = new Intent(context, DetailActivity.class);
+            //.putExtra(Intent.EXTRA_TEXT, smovieTitle);
+            //intent.putExtra(iMovieTittle,poster);
+            //intent.putExtra(iMoviePoster,sMovieUrl);
+
+            //context.startActivity(intent);
+
+            if(clickListener != null){
+                clickListener.itemClicked(v,getPosition());
+            }
+
+
+        }
     }
 
+
+    public interface ClickListener{
+        public void itemClicked(View v,int position);
+    }
 
 
 }

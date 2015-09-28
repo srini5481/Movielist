@@ -36,12 +36,19 @@ import java.util.Arrays;
 /**
  * Created by qze713 on 9/9/15.
  */
-public class MovieImageFragment extends Fragment {
+public class MovieImageFragment extends Fragment implements MovieDetailAdapter.ClickListener{
 
 
     //private ArrayList<MovieListArray> mMovieAdapter;
 
     String[] movieId,movieTitle,movieOverview,movieReleaseDate,moviePosterPath,movieVoteAverage,moviebackdrop;
+    public final static String iMovieId = "tempId";
+    public final static String iMovieTittle = "temp_movie";
+    public final static String iMoviePoster = "temp_movie_Poster";
+    public final static String imovieReleaseDate = "temp_imovieRelease date";
+    public final static String iMovieRating ="temp_rating";
+    public final static String iMovieOverview ="temp_overview";
+    public final static String iMovieBackDrop = "temp_backdrop";
 
 
     RecyclerView rv;
@@ -136,6 +143,8 @@ public class MovieImageFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
         rv = (RecyclerView) rootView.findViewById(R.id.rv);
 
@@ -143,6 +152,11 @@ public class MovieImageFragment extends Fragment {
 
         rv.setLayoutManager(llm);
         Intent intent = getActivity().getIntent();
+
+        adapter1.setClickListener(this);
+
+        //rv.setOnClickListener(m)
+
 
 
 
@@ -159,6 +173,34 @@ public class MovieImageFragment extends Fragment {
 */
 
         return rootView;
+    }
+
+    @Override
+    public void itemClicked(View v, int position) {
+
+        //startActivity(new Intent(getActivity(),DetailActivity.class));
+
+        String smovieId = movieId[position];
+        String smovieTitle = movieTitle[position];
+        String sMovieBackdrop = moviebackdrop[position];
+        String sMovieUrl = moviePosterPath[position];
+        String sreleaseYear = movieReleaseDate[position];
+        String sMovieRating = movieVoteAverage[position];
+        String sMovieOverview = movieOverview[position];
+
+
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        //.putExtra(Intent.EXTRA_TEXT, smovieTitle);
+        intent.putExtra(iMovieId,smovieId);
+        intent.putExtra(iMovieTittle,smovieTitle);
+        intent.putExtra(iMovieBackDrop,sMovieBackdrop);
+        intent.putExtra(iMoviePoster,sMovieUrl);
+        intent.putExtra(imovieReleaseDate,sreleaseYear);
+        intent.putExtra(iMovieRating,sMovieRating);
+        intent.putExtra(iMovieOverview,sMovieOverview);
+        ;
+        startActivity(intent);
+
     }
 
     public class FetchMovieData extends AsyncTask<Void,Void,ArrayList<MovieListArray>> {
